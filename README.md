@@ -1,4 +1,4 @@
-Quartz任务调度
+# Quartz任务调度
 
 lan7916 <lan7916@hotmail.com>
 
@@ -13,7 +13,7 @@ v1.0, 2019.01
 ----
 教程 https://github.com/lan7916/itlan_quartz[源代码]
 
-== 一、Quartz概念
+## 一、Quartz概念
 Quartz是OpenSymphony开源组织在Job scheduling领域又一个开源项目，它可以与J2EE与J2SE应用程序相结合，也可以单独使用。
 
 Quartz是开源且具有丰富特性的“任务调度库”，能够集成于任何的Java应用，小到独立的应用，大至电子商业系统。Quartz能够创建亦简单亦复杂的调度，以执行上十、上百，甚至上万的任务。任务job被定义为标准的Java组件，能够执行任何你想要实现的功能。Quartz调度框架包含许多企业级的特性，如JTA事务、集群的支持。
