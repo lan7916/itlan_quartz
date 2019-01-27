@@ -4,13 +4,11 @@ lan7916 <lan7916@hotmail.com>
 
 v1.0, 2019.01
 
-:toc: right
-
 前言
 ----
 最近学习“黑马程序员”的《精品详解Quartz视频》教程，顺便将课程的笔记整理出来。发现网上根本搜不到视频的笔记资料，遂将此资料分享出来，若有侵权，请联系本人<lan7916@hotmail.com>
-
 ----
+
 教程 https://github.com/lan7916/itlan_quartz[源代码]
 
 ## 一、Quartz概念
@@ -22,19 +20,19 @@ Quartz是开源且具有丰富特性的“任务调度库”，能够集成于�
 
 官网： http://www.quartz-scheduler.org[http://www.quartz-scheduler.org]
 
-== 二、Quartz运行环境
+## 二、Quartz运行环境
 * Quartz可以运行嵌入在另一个独立式应用程序
 * Quartz可以在应用程序服务器（或Servlet容器）内被实例化，并且参与事务
 * Quartz可以作为一个独立的程序运行（其自己的Java虚拟机内），可以通过RMI使用
 * Quartz可以被实例化，作为独立的项目集群（负载平衡和故障转移功能），用于作业的执行
 
-== 三、Quartz设计模式
+## 三、Quartz设计模式
 * Builder模式
 * Factory模式
 * 组件模式
 * 链式编程
 
-== 四、Quartz学习的核心概念
+## 四、Quartz学习的核心概念
 * 任务Job
 
 Job就是你想要实现的任务类，每一个Job必须实现org.quartz.job接口，且只需实现接口定义的execute()方法。
@@ -48,10 +46,10 @@ Trigger主要包含两种SimplerTrigger和CronTrigger两种。关于二者的区
 
 Scheduler为任务的调度器，它会将任务Job及触发器Trigger整合起来，负责基于Trigger设定的时间来执行Job。
 
-== 五、Quartz的体系结构
+## 五、Quartz的体系结构
 image::imgs/01.jpg[]
 
-== 六、Quartz的几个常用API
+## 六、Quartz的几个常用API
 以下是Quartz编程API几个重要接口，也是Quartz的重要组件。
 
 * Scheduler 用于与调度程序交互的主程序接口。 +
@@ -71,8 +69,8 @@ Scheduler调度程序-任务执行计划表，只有安排进执行计划的任�
 
 * JobListener、TriggerListener、SchedulerListener监听器，用于对组件的监听。
 
-== 七、Quart的使用
-=== 1、准备工作
+## 七、Quart的使用
+### 1、准备工作
 新建maven工程
 
 image::imgs/02.jpg[]
@@ -82,7 +80,7 @@ image::imgs/03.jpg[]
 
 image::imgs/04.jpg[]
 
-=== 2、引入Quartz的jar包
+### 2、引入Quartz的jar包
 [source,xml]
 ----
 <dependencies>
@@ -144,7 +142,7 @@ log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
 
 log4j.rootLogger=info, stdout
 ----
-=== 3、入门案例
+### 3、入门案例
 （1）创建HelloJob任务类
 
 image::imgs/05.jpg[]
@@ -204,7 +202,7 @@ public class HelloSchedulerDemo {
 
 image::imgs/06.jpg[]
 
-=== 4、Job和JobDetail介绍
+### 4、Job和JobDetail介绍
 * Job：工作任务调度的接口，任务了需要实现该接口。该接口中定义execute方法，类似JDK提供的TimeTask类的run方法。在里面编写任务执行的业务逻辑。
 * Job实例在Quartz中的声明周期：每次调度器执行Job时，它在调用execute方法前会创建一个新的Job实例，当调用完成后，关联的Job对象实例会被释放，释放的实例会被垃圾回收机制回收。
 * JobDetail：JobDetail为Job实例提供了许多设置属性，以及JobDataMap成员变量属性，它用来存储特定Job实例的状态信息，调度器需要借助JobDetail对象来添加Job实例。
@@ -221,11 +219,11 @@ System.out.println("group:" +job.getKey().getGroup());
 System.out.println("jobClass:" +job.getJobClass().getName());
 ----
 
-=== 5、JobExecutionContext介绍
+### 5、JobExecutionContext介绍
 * 当Scheduler调用一个Job，就会将JobExecutionContext传递给Job的execute()方法；
 * Job能通过JobExecutionContext对象访问到Quartz运行时候的环境以及Job本身的明细数据。
 
-=== 6、JobDataMap介绍
+### 6、JobDataMap介绍
 （1）使用Map获取
 
 * 在进行任务调度时，JobDataMap存储在JobExecutionContext中，非常方便获取。
@@ -292,7 +290,7 @@ public void setMessage(String message) {
 ====
 
 
-=== 7、有状态的Job和无状态的Job
+### 7、有状态的Job和无状态的Job
 @PersistJobDataAfterExecution注解的使用
 
 有状态的Job可以理解为多次Job调用期间可以持有一些状态信息，这些状态信息存储在JobDataMap中，而默认的无状态Job每次调用时都会创建一个新的JobDataMap。
@@ -328,7 +326,7 @@ HelloJob类没有添加@PersistJobDataAfterExecution注解，每次调用时都�
 
 HelloJob类添加@PersistJobDataAfterExecution注解，多次调用期间可以持有一些状态信息，即可以实现count的累加。
 
-=== 8、Trigger介绍
+### 8、Trigger介绍
 image::imgs/07.jpg[]
 Quartz有一些不同的触发器类型，不过，用得最多的是SimpleTrigger和CronTrigger。
 
@@ -411,7 +409,7 @@ public class HelloSchedulerDemoTrigger {
 }
 ----
 
-=== 9、SimpleTrigger触发器
+### 9、SimpleTrigger触发器
 SimpleTrigger对于设置和使用是最为简单的一种QuartzTrigger。
 
 它是为那种需要在特定的日期/时间启动，且以一个可能的间隔时间重复执行n此的Job所设计的。
@@ -519,7 +517,7 @@ Trigger trigger = TriggerBuilder.newTrigger()
 * 如果有指定结束时间属性值，则结束时间属性优先于重复次数属性，这样的好处在于：当我们需要创建一个每间隔10秒触发一次直到指定的结束时间的Trigger，而无需去计算从开始到结束的所重复的次数，我们只需简单的指定结束时间和使用REPEAT_INDEFINITELY作为重复次数的属性值即可。
 ====
 
-=== 10、CronTrigger触发器
+### 10、CronTrigger触发器
 如果你需要像日历那样按日程来触发任务，而不是像SimpleTrigger那样每隔特定的间隔时间触发，CronTrigger通常比SimpleTrigger更有用，因为它是基于日历的作业调度器。
 
 使用CronTrigger，你可以指定诸如“每个周五中午”，或者“每个工作日的9:30”或者“从每个周一、周三、周五的上午9:00到上午10:00之间每个五分钟”这样日程安排来触发。甚至，像SimpleTrigger一样，CronTrigger也有一个startTime以指定日程从什么时候开始，也有一个（可选的）endTime以指定何时日程不再继续。
@@ -630,7 +628,7 @@ public class HelloSchedulerDemoCronTrigger {
 * 利用工具，在线生成
 ====
 
-=== 11、配置、资源SchedulerFactory
+### 11、配置、资源SchedulerFactory
 Quartz以模块方式架构，因此，要使它运行，几个组件必须很好的咬合在一起。幸运的是，已经有了一些现存的助手可以完成这些工作。
 
 所有的Scheduler实例由SchedulerFactory创建。
@@ -739,7 +737,7 @@ DirectSchedulerFactory directSchedulerFactory = DirectSchedulerFactory.getInstan
 Scheduler scheduler = directSchedulerFactory.getScheduler();
 ----
 
-=== 12、Quartz.properties
+### 12、Quartz.properties
 默认路径：quartz-2.3.0中的org.quartz中的quartz.properties
 
 image::imgs/11.jpg[]
@@ -839,8 +837,8 @@ public class QuartzProperties {
 
 通过Properties设置工厂属性的缺点在于用硬编码，假如需要修改例子中线程数量，将不得不修改代码，然后重新编译。我们这里不推荐使用。
 
-== 八、Quartz监听器
-=== 1、概念
+## 八、Quartz监听器
+### 1、概念
 Quartz的监听器用于当任务调度中你所关注事件发生时，能够及时获取这一事件的通知。类似于任务执行过程中的邮件、短信类的提醒。Quartz监听器主要由JobListener、TriggerListener、SchedulerListener三种，顾名思义，分布表示任务、触发器、调度器对应的监听器。三者的使用方法类似，在开始介绍三种监听器之前，需要明确两个概念：全局监听器与非全局监听器，二者的区别在于：
 
 * 全局监听器能够接收到所有的Job/Trigger的事件通知
@@ -848,7 +846,7 @@ Quartz的监听器用于当任务调度中你所关注事件发生时，能够�
 
 本课程关于全局与非全局的监听器的使用，将一一介绍。
 
-=== 2、JobListener
+### 2、JobListener
 任务调度过程中，与任务Job相关的事件包括：Job开始要执行的提示；Job执行完成的提示等。
 [source,java]
 ----
@@ -961,7 +959,7 @@ public class HelloSchedulerDemoJobListener {
 }
 ----
 
-=== 3、TriggerListener
+### 3、TriggerListener
 任务调度过程中，与触发器Trigger相关的事件包括：触发器触发、触发器未正确触发、触发器完成等。
 [source,java]
 ----
@@ -1096,7 +1094,7 @@ public class HelloSchedulerDemoTriggerListener {
 ----
 
 
-=== 4、SchedulerListener
+### 4、SchedulerListener
 SchedulerListener会在Scheduler的生命周期中关键事件发生时被调用。与Scheduler有关的事件包括：增加一个Job/Trigger，删除一个Job/Trigger，Scheduler发生严重错误，关闭Scheduler等。
 [source,java]
 ----
