@@ -496,15 +496,12 @@ Trigger trigger = TriggerBuilder.newTrigger()
         .build();
 ```
 
-====
-[CAUTION]
-**需要注意的点**
-
+> 需要注意的点
 * SimpleTrigger的属性有：开始时间、结束时间、重复次数和重复的时间间隔。
 * 重复次数属性的值可以为0、正整数、或常量SimpleTrigger.REPEAT_INDEFINITELY。
 * 重复的时间间隔属性值必须为大于0或者长整形的正整数，以毫秒作为时间单位，当重复的时间间隔为0时，意味着与Trigger同时触发执行。
 * 如果有指定结束时间属性值，则结束时间属性优先于重复次数属性，这样的好处在于：当我们需要创建一个每间隔10秒触发一次直到指定的结束时间的Trigger，而无需去计算从开始到结束的所重复的次数，我们只需简单的指定结束时间和使用REPEAT_INDEFINITELY作为重复次数的属性值即可。
-====
+
 
 ### 10、CronTrigger触发器
 如果你需要像日历那样按日程来触发任务，而不是像SimpleTrigger那样每隔特定的间隔时间触发，CronTrigger通常比SimpleTrigger更有用，因为它是基于日历的作业调度器。
