@@ -123,8 +123,7 @@ image::imgs/04.jpg[]
 ```
 
 导入log4j.properties日志文件
-[source,properties]
-----
+```properties
 ### direct log messages to stdout ###
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender
 log4j.appender.stdout.Target=System.out
@@ -140,14 +139,14 @@ log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
 *** set log levels - for more verbose logging change 'info' to 'debug' ###
 
 log4j.rootLogger=info, stdout
-----
+```
 ### 3、入门案例
 （1）创建HelloJob任务类
 
 image::imgs/05.jpg[]
+
 HelloJob.java
-[source,java]
-----
+```java
 // 定义任务类
 public class HelloJob implements Job {
 
@@ -161,12 +160,11 @@ public class HelloJob implements Job {
         System.out.println("正在进行数据库的备份工作，备份数据库的时间是：" +dateString);
     }
 }
-----
+```
 
 （2）创建任务调度类HelloSchedulerDemo +
 HelloSchedulerDemo.java
-[source,java]
-----
+```java
 public class HelloSchedulerDemo {
 
     public static void main(String[] args) throws Exception {
@@ -195,7 +193,7 @@ public class HelloSchedulerDemo {
     }
 
 }
-----
+```
 
 （3）实现效果
 
@@ -207,8 +205,7 @@ image::imgs/06.jpg[]
 * JobDetail：JobDetail为Job实例提供了许多设置属性，以及JobDataMap成员变量属性，它用来存储特定Job实例的状态信息，调度器需要借助JobDetail对象来添加Job实例。
 * JobDetail重要属性：name、group、jobClass、JobDataMap
 
-[source,java]
-----
+```java
 JobDetail job = JobBuilder.newJob(HelloJob.class)
         .withIdentity("job1", "group1") // 定义该实例唯一标识，并指定一个组
         .build();
@@ -216,7 +213,7 @@ JobDetail job = JobBuilder.newJob(HelloJob.class)
 System.out.println("name:" +job.getKey().getName());
 System.out.println("group:" +job.getKey().getGroup());
 System.out.println("jobClass:" +job.getJobClass().getName());
-----
+```
 
 ### 5、JobExecutionContext介绍
 * 当Scheduler调用一个Job，就会将JobExecutionContext传递给Job的execute()方法；
@@ -230,8 +227,7 @@ System.out.println("jobClass:" +job.getJobClass().getName());
 * JobDataMap实现了JDK的Map接口，并且添加了非常方便的方法用来存取基本数据类型。
 
 HelloSchedulerDemo.java
-[source,java]
-----
+```java
 // 2：任务实例（JobDetail）定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
 JobDetail job = JobBuilder.newJob(HelloJob.class)
         .withIdentity("job1", "group1") // 定义该实例唯一标识，并指定一个组
@@ -246,10 +242,10 @@ Trigger trigger = TriggerBuilder.newTrigger()
         .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatSecondlyForever(5)) // 每5秒重复执行一次
         .usingJobData("message", "simple触发器")
         .build();
-----
+```
+
 HelloJob.java
-[source,java]
-----
+```java
 JobKey jobKey = context.getJobDetail().getKey();
 System.out.println("工作任务名称：" +jobKey.getName() +"；    工作任务组：" +jobKey.getGroup());
 System.out.println("任务类名称（带包名）：" +context.getJobDetail().getJobClass().getName());
@@ -267,19 +263,18 @@ System.out.println("任务参数消息值：" +jobDataMessage);
 JobDataMap triggerDataMap = context.getTrigger().getJobDataMap();
 String triggerDataMessage = triggerDataMap.getString("message");
 System.out.println("触发器参数消息值：" +triggerDataMessage);
-----
+```
 
 （2）Job实现类中添加setter方法对应JobDataMap的键值，Quartz框架默认的JobFactory实现类在初始化Job实例对象时会自动调用这些setter方法。
 
 HelloJob.java
-[source,java]
-----
+```java
 private String message;
 
 public void setMessage(String message) {
     this.message = message;
 }
-----
+```
 
 ====
 [CAUTION]
@@ -295,38 +290,39 @@ public void setMessage(String message) {
 有状态的Job可以理解为多次Job调用期间可以持有一些状态信息，这些状态信息存储在JobDataMap中，而默认的无状态Job每次调用时都会创建一个新的JobDataMap。
 
 （1）修改HelloSchedulerDemo.java。添加.usingJobData("count", 0)，表示计数器。
-[source,java]
-----
+```java
 JobDetail job = JobBuilder.newJob(HelloJob.class)
         .withIdentity("job1", "group1") // 定义该实例唯一标识，并指定一个组
         .usingJobData("message", "打印日志")
         .usingJobData("count", 0)
         .build();
-----
+```
 
 （2）修改HelloJob.java
 
 添加count的setter方法。
-[source,java]
-----
+```java
 private Integer count;
 public void setCount(Integer count) {
     this.count = count;
 }
-----
+```
+
 在public void execute(JobExecutionContext context) throws JobExecutionException的方法中添加
-[source,java]
-----
+```java
 ++count;
 System.out.println("count的数量：" +count);
 context.getJobDetail().getJobDataMap().put("count", count);
-----
+```
+
 HelloJob类没有添加@PersistJobDataAfterExecution注解，每次调用时都会创建一个新的JobDataMap。不会累加。
 
 HelloJob类添加@PersistJobDataAfterExecution注解，多次调用期间可以持有一些状态信息，即可以实现count的累加。
 
 ### 8、Trigger介绍
+
 image::imgs/07.jpg[]
+
 Quartz有一些不同的触发器类型，不过，用得最多的是SimpleTrigger和CronTrigger。
 
 （1）jobKey +
@@ -341,8 +337,7 @@ Quartz有一些不同的触发器类型，不过，用得最多的是SimpleTrigg
 案例：
 
 HelloJobTrigger.java
-[source,java]
-----
+```java
 // 定义任务类
 public class HelloJobTrigger implements Job {
 
@@ -362,11 +357,10 @@ public class HelloJobTrigger implements Job {
     }
 
 }
-----
+```
 
 HelloSchedulerDemoTrigger.java
-[source,java]
-----
+```java
 public class HelloSchedulerDemoTrigger {
 
     public static void main(String[] args) throws Exception {
@@ -406,7 +400,7 @@ public class HelloSchedulerDemoTrigger {
     }
 
 }
-----
+```
 
 ### 9、SimpleTrigger触发器
 SimpleTrigger对于设置和使用是最为简单的一种QuartzTrigger。
@@ -416,8 +410,8 @@ SimpleTrigger对于设置和使用是最为简单的一种QuartzTrigger。
 案例一：表示在一个指定的时间段内，执行一次作业任务；
 
 HelloJobSimpleTrigger.java
-[source,java]
-----
+
+```java
 // 定义任务类
 public class HelloJobSimpleTrigger implements Job {
 
@@ -432,10 +426,11 @@ public class HelloJobSimpleTrigger implements Job {
     }
 
 }
-----
+```
+
 HelloSchedulerDemoSimpleTrigger.java
-[source,java]
-----
+
+```java
 public class HelloSchedulerDemoSimpleTrigger {
 
     public static void main(String[] args) throws Exception {
@@ -467,26 +462,26 @@ public class HelloSchedulerDemoSimpleTrigger {
     }
 
 }
-----
+```
 
 案例二：或在指定的时间间隔内多次执行作业任务。
 
 修改HelloSchedulerDemoSimpleTrigger.java
-[source,java]
-----
+
+```java
 // 3、触发器（Trigger）定义触发器，马上执行，然后每5秒重复执行一次
 Trigger trigger = TriggerBuilder.newTrigger()
         .withIdentity("trigger1", "group1") // 参数1：触发器的名称（唯一实例）；参数2：触发器组的名称
         .startAt(startDate) // 设置任务的开始时间
         .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatSecondlyForever(5).withRepeatCount(2))  // 每5秒执行一次，连续执行3次后停止，默认是0
         .build();
-----
+```
 
 案例三：指定任务的结束时间。
 
 修改HelloSchedulerDemoSimpleTrigger.java
-[source,java]
-----
+
+```java
 // 设置任务的结束时间
 Date endDate = new Date();
 // 启动结束，任务在当前时间10秒后停止
@@ -504,7 +499,7 @@ Trigger trigger = TriggerBuilder.newTrigger()
         .endAt(endDate) // 设置任务的结束时间
         .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatSecondlyForever(5).withRepeatCount(2))  // 每5秒执行一次，连续执行3次后停止，默认是0
         .build();
-----
+```
 
 ====
 [CAUTION]
@@ -544,8 +539,8 @@ image::imgs/08.jpg[]
 image::imgs/09.jpg[]
 
 练习一下：
-[source,properties]
-----
+
+```properties
 "0 0 10,14,16 * * ?" 每天上午10点，下午2点，4点
 "0 0/30 9-17 * * ?" 朝九晚五工作时间内每半小时，从0分开始每隔30分钟发送一次
 "0 0 12 ? * WED" 表示每个星期三中午12点
@@ -565,13 +560,13 @@ image::imgs/09.jpg[]
 "0 15 10 ? * 6L" 每月的最后一个星期五上午10:15触发
 "0 15 10 ? * 6L 2002-2005" 2002年至2005年的每月的最后一个星期五上午10:15触发
 "0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发
-----
+```
 
 案例：
 
 HelloJobCronTrigger.java
-[source,java]
-----
+
+```java
 // 定义任务类
 public class HelloJobCronTrigger implements Job {
 
@@ -586,10 +581,11 @@ public class HelloJobCronTrigger implements Job {
     }
 
 }
-----
+```
+
 HelloSchedulerDemoCronTrigger.java
-[source,java]
-----
+
+```java
 public class HelloSchedulerDemoCronTrigger {
 
     public static void main(String[] args) throws Exception {
@@ -615,7 +611,7 @@ public class HelloSchedulerDemoCronTrigger {
         //scheduler.shutdown();
     }
 }
-----
+```
 
 ====
 [NOTE]
@@ -648,41 +644,40 @@ Quartz默认的SchedulerFactory
 * 配置参数一般存储在quartz.properties文件中
 * 调用getScheduler方法就能创建和初始化调度器对象
 
-[source,java]
-----
+```java
 SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 Scheduler scheduler = schedulerFactory.getScheduler();
-----
+```
 
 用法一：输出调度器开始的时间（重要：使得任务和触发器进行关联）：
 
 Date schedulerjob(JobDetail jobDetail, Trigger trigger)
-[source,java]
-----
+
+```java
 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 System.out.println("调度器的开始时间是： " +dateFormat.format(schedulerjob(jobDetail, trigger)));
-----
+```
 
 用法二：启动任务调度：
 
 void start();
-[source,java]
-----
+
+```java
 scheduler.start();
-----
+```
 
 用法三：任务调度挂起，即暂停操作
 
 void standby();
-[source,java]
-----
+
+```java
 // Scheduler执行2秒后挂起
 Thread.sleep(2000L);
 scheduler.standby();
 // Scheduler执行5秒后自动开启
 Thread.sleep(5000L);
 scheduler.start();
-----
+```
 
 用法四：关闭任务调度
 
@@ -692,19 +687,19 @@ shutdown(true)：表示等待所有正在执行的Job执行完毕之后，再关
 shutdown(false)： 表示直接关闭Scheduler
 
 测试一：
-[source,java]
-----
+
+```java
 // Scheduler执行2秒后挂起
 Thread.sleep(2000L);
 scheduler.shutdown();
 // Scheduler执行5秒后自动开启
 Thread.sleep(5000L);
 scheduler.start();
-----
+```
 
 测试二：
-[source,java]
-----
+
+```java
 // Scheduler执行2秒后挂起
 Thread.sleep(2000L);
 /**
@@ -713,11 +708,12 @@ Thread.sleep(2000L);
  */
 scheduler.shutdown(false);
 System.out.println("Scheduler是否被关闭：" +scheduler.isShutdown());
-----
+```
+
 同时修改HelloJobScheduler.java +
 任务调度延迟5秒执行
-[source,java]
-----
+
+```java
 // 延迟任务执行的时间，推迟5秒后执行
 try {
     Thread.sleep(5000L);
@@ -725,16 +721,16 @@ try {
     // TODO Auto-generated catch block
     e.printStackTrace();
 }
-----
+```
 
 （2）DirectSchedulerFactory（了解）：
 
 DirectSchedulerFactory是对SchedulerFactory的直接实现，通过它可以直接构建Scheduler、ThreadPool等
-[source,java]
-----
+
+```java
 DirectSchedulerFactory directSchedulerFactory = DirectSchedulerFactory.getInstance();
 Scheduler scheduler = directSchedulerFactory.getScheduler();
-----
+```
 
 ### 12、Quartz.properties
 默认路径：quartz-2.3.0中的org.quartz中的quartz.properties
@@ -771,8 +767,8 @@ org.quartz.threadPool.class +
 满足特定需求用到的Quartz插件的配置。
 
 例子：
-[source,properties]
-----
+
+```properties
 #===============================================================
 #Configure Main Scheduler Properties 调度器属性
 #===============================================================
@@ -805,11 +801,11 @@ org.quartz.plugin.jobInitializer.class = org.quartz.plugins.xml.JobInitializatio
 org.quartz.plugin.jobInitializer.overWriteExistingJobs = true
 org.quartz.plugin.jobInitializer.failOnFileNotFound = true
 org.quartz.plugin.jobInitializer.validating=false
-----
+```
 
 也可以编写程序代码操作quartz.properties文件的内容：
-[source,java]
-----
+
+```java
 public class QuartzProperties {
 
     public static void main(String[] args) {
@@ -832,7 +828,7 @@ public class QuartzProperties {
         }
     }
 }
-----
+```
 
 通过Properties设置工厂属性的缺点在于用硬编码，假如需要修改例子中线程数量，将不得不修改代码，然后重新编译。我们这里不推荐使用。
 
@@ -847,15 +843,15 @@ Quartz的监听器用于当任务调度中你所关注事件发生时，能够�
 
 ### 2、JobListener
 任务调度过程中，与任务Job相关的事件包括：Job开始要执行的提示；Job执行完成的提示等。
-[source,java]
-----
+
+```java
 public interface JobListener {
     public String getName();
     public void jobToBeExecuted(JobExecutionContext context);
     public void jobExecutionVetoed(JobExecutionContext context);
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException);
 }
-----
+```
 
 *其中：*
 
@@ -867,8 +863,8 @@ public interface JobListener {
 示例：
 
 HelloJobListener.java
-[source,java]
-----
+
+```java
 // 定义任务类
 public class HelloJobListener implements Job {
 
@@ -882,13 +878,13 @@ public class HelloJobListener implements Job {
         System.out.println("正在进行数据库的备份工作，备份数据库的时间是：" +dateString);
     }
 }
-----
+```
 
 创建自定义的JobListener
 
 MyJobListener.java
-[source,java]
-----
+
+```java
 public class MyJobListener implements JobListener {
 
     @Override
@@ -917,13 +913,13 @@ public class MyJobListener implements JobListener {
     }
 
 }
-----
+```
 
 执行调度器
 
 HelloSchedulerDemoJobListener.java
-[source,java]
-----
+
+```java
 public class HelloSchedulerDemoJobListener {
 
     public static void main(String[] args) throws Exception {
@@ -956,12 +952,12 @@ public class HelloSchedulerDemoJobListener {
     }
 
 }
-----
+```
 
 ### 3、TriggerListener
 任务调度过程中，与触发器Trigger相关的事件包括：触发器触发、触发器未正确触发、触发器完成等。
-[source,java]
-----
+
+```java
 public interface TriggerListener {
     public String getName();
     public void triggerFired(Trigger trigger, JobExecutionContext context);
@@ -969,7 +965,8 @@ public interface TriggerListener {
     public void triggerMisfired(Trigger trigger);
     public void triggerComplete(Trigger trigger, JobExecutionContext context,            CompletedExecutionInstruction triggerInstructionCode)
 }
-----
+```
+
 *其中：*
 
 . getName方法：用于获取触发器的名称。
@@ -983,8 +980,8 @@ public interface TriggerListener {
 下面的例子简单展示了TriggerListener的使用，其中创建并注册TriggerListener与JobListener几乎类似。
 
 HelloJobListener.java
-[source,java]
-----
+
+```java
 // 定义任务类
 public class HelloJobListener implements Job {
 
@@ -998,11 +995,11 @@ public class HelloJobListener implements Job {
         System.out.println("正在进行数据库的备份工作，备份数据库的时间是：" +dateString);
     }
 }
-----
+```
 
 MyTriggerListener.java
-[source,java]
-----
+
+```java
 public class MyTriggerListener implements TriggerListener {
     
     private String name;
@@ -1053,11 +1050,11 @@ public class MyTriggerListener implements TriggerListener {
     }
 
 }
-----
+```
 
 HelloSchedulerDemoTriggerListener.java
-[source,java]
-----
+
+```java
 public class HelloSchedulerDemoTriggerListener {
 
     public static void main(String[] args) throws Exception {
@@ -1090,13 +1087,12 @@ public class HelloSchedulerDemoTriggerListener {
     }
 
 }
-----
-
+```
 
 ### 4、SchedulerListener
 SchedulerListener会在Scheduler的生命周期中关键事件发生时被调用。与Scheduler有关的事件包括：增加一个Job/Trigger，删除一个Job/Trigger，Scheduler发生严重错误，关闭Scheduler等。
-[source,java]
-----
+
+```java
 public interface SchedulerListener {
     public void jobScheduled(Trigger trigger);
     public void jobUnscheduled(TriggerKey triggerKey);
@@ -1111,7 +1107,8 @@ public interface SchedulerListener {
     public void schedulerShutdown();
     public void schedulingDataCleared()
 }
-----
+```
+
 *其中：*
 
 . jobScheduled方法：用于部署JobDetail时调用。
@@ -1132,8 +1129,8 @@ public interface SchedulerListener {
 下面的代码简单描述了如何使用SchedulerListener方法：
 
 HelloJobListener.java
-[source,java]
-----
+
+```java
 // 定义任务类
 public class HelloJobListener implements Job {
 
@@ -1147,11 +1144,11 @@ public class HelloJobListener implements Job {
         System.out.println("正在进行数据库的备份工作，备份数据库的时间是：" +dateString);
     }
 }
-----
+```
 
 MySchedulerListener.java
-[source,java]
-----
+
+```java
 public class MySchedulerListener implements SchedulerListener {
 
     @Override
@@ -1280,11 +1277,11 @@ public class MySchedulerListener implements SchedulerListener {
     }
 
 }
-----
+```
 
 HelloSchedulerDemoTriggerListener.java
-[source,java]
-----
+
+```java
 public class HelloSchedulerDemoTriggerListener {
 
     public static void main(String[] args) throws Exception {
@@ -1321,4 +1318,4 @@ public class HelloSchedulerDemoTriggerListener {
     }
 
 }
-----
+```
