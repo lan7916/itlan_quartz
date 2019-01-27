@@ -73,12 +73,12 @@ Scheduler调度程序-任务执行计划表，只有安排进执行计划的任�
 ### 1、准备工作
 新建maven工程
 
-image::imgs/02.jpg[]
-image::imgs/03.jpg[]
+![avatar](imgs/02.jpg)
+![avatar](imgs/03.jpg)
 
 查找： [https://mvnrepository.com/](https://mvnrepository.com/)
 
-image::imgs/04.jpg[]
+![avatar](imgs/04.jpg)
 
 ### 2、引入Quartz的jar包
 ```xml
@@ -143,7 +143,7 @@ log4j.rootLogger=info, stdout
 ### 3、入门案例
 （1）创建HelloJob任务类
 
-image::imgs/05.jpg[]
+![avatar](imgs/05.jpg)
 
 HelloJob.java
 ```java
@@ -197,7 +197,7 @@ public class HelloSchedulerDemo {
 
 （3）实现效果
 
-image::imgs/06.jpg[]
+![avatar](imgs/06.jpg)
 
 ### 4、Job和JobDetail介绍
 * Job：工作任务调度的接口，任务了需要实现该接口。该接口中定义execute方法，类似JDK提供的TimeTask类的run方法。在里面编写任务执行的业务逻辑。
@@ -316,7 +316,7 @@ HelloJob类添加@PersistJobDataAfterExecution注解，多次调用期间可以�
 
 ### 8、Trigger介绍
 
-image::imgs/07.jpg[]
+![avatar](imgs/07.jpg)
 
 Quartz有一些不同的触发器类型，不过，用得最多的是SimpleTrigger和CronTrigger。
 
@@ -525,13 +525,13 @@ Cron表达式被用来配置CronTrigger实例。Cron表达式是一个由7个子
 
 取值：
 
-image::imgs/08.jpg[]
+![avatar](imgs/08.jpg)
 
 单个子表达式可以包含范围或者列表。例如：前面例子中的周中的天这个域（这里是“WED”）可以被替换为“MON-FRI”，“MON,WED,FRI”或者甚至“MON-WED,SAT”。
 
 所有的域中的值都有特定的合法范围，这些值的合法范围相当明显，例如：秒和分域的合法值为0到59，小时的合法范围是0到23，Day-of-Month中值的合法范围是1到31，但是需要注意不同的月份中的天数不同。月份的合法值是1到12.或者用字符串JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV及DEC来表示。Day-of-Week可以用1到7来表示（1=星期日）或者用字符串SUN,MON,TUE,WED,THU,FRI和SAT来表示。
 
-image::imgs/09.jpg[]
+![avatar](imgs/09.jpg)
 
 练习一下：
 
@@ -625,7 +625,7 @@ Quartz以模块方式架构，因此，要使它运行，几个组件必须很�
 
 Quartz的三个核心概念：调度器、任务、触发器，三者之间的关系是：
 
-image::imgs/10.jpg[]
+![avatar](imgs/10.jpg)
 
 大家都知道，一个作业，比较重要的三个要素就是Scheduler，JobDetail，Trigger；而Trigger对于Job而言就好比一个驱动器，没有触发器来定时驱动作业，作业就无法运行；对于Job而言，一个Job可以对应多个Trigger，但对于Trigger而言，一个Trigger只能对应一个Job，所以一个Trigger只能被指派给一个Job；如果你需要一个更负责的触发计划，你可以创建多个Trigger并指派它们给同一个Job。
 
@@ -730,7 +730,7 @@ Scheduler scheduler = directSchedulerFactory.getScheduler();
 ### 12、Quartz.properties
 默认路径：quartz-2.3.0中的org.quartz中的quartz.properties
 
-image::imgs/11.jpg[]
+![avatar](imgs/11.jpg)
 
 我们也可以在项目的资源下添加quartz.properties文件，去覆盖底层的配置文件。
 
