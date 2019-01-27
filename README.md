@@ -17,7 +17,7 @@ Quartz是开源且具有丰富特性的“任务调度库”，能够集成于�
 
 简而言之，Quartz就是基于Java实现的任务调度框架，用于执行你想要执行的任何任务。
 
-官网： http://www.quartz-scheduler.org[http://www.quartz-scheduler.org]
+官网： [http://www.quartz-scheduler.org](http://www.quartz-scheduler.org)
 
 ## 二、Quartz运行环境
 * Quartz可以运行嵌入在另一个独立式应用程序
@@ -275,12 +275,7 @@ public void setMessage(String message) {
 }
 ```
 
-====
-[CAUTION]
-**注意：**
-
-如果遇到同名的key，Trigger中的.usingJobData("message", "simple触发器")会覆盖JobDetail中的.usingJobData("message", "打印日志")。
-====
+> 注意：如果遇到同名的key，Trigger中的.usingJobData("message", "simple触发器")会覆盖JobDetail中的.usingJobData("message", "打印日志")。
 
 
 ### 7、有状态的Job和无状态的Job
