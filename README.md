@@ -8,7 +8,7 @@ v1.0, 2019.01
 
 最近学习“黑马程序员”的《精品详解Quartz视频》教程，顺便将课程的笔记整理出来。发现网上根本搜不到视频的笔记资料，遂将此资料分享出来，若有侵权，请联系本人<lan7916@hotmail.com>
 
-教程 https://github.com/lan7916/itlan_quartz[源代码]
+教程 [https://github.com/lan7916/itlan_quartz](源代码)
 
 ## 一、Quartz概念
 Quartz是OpenSymphony开源组织在Job scheduling领域又一个开源项目，它可以与J2EE与J2SE应用程序相结合，也可以单独使用。
