@@ -81,8 +81,7 @@ image::imgs/03.jpg[]
 image::imgs/04.jpg[]
 
 ### 2、引入Quartz的jar包
-[source,xml]
-----
+```xml
 <dependencies>
     <!-- Quartz 核心包 -->
     <dependency>
@@ -121,7 +120,7 @@ image::imgs/04.jpg[]
         </plugin>
     </plugins>
 </build>
-----
+```
 
 导入log4j.properties日志文件
 [source,properties]
