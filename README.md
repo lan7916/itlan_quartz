@@ -75,7 +75,7 @@ Scheduler调度程序-任务执行计划表，只有安排进执行计划的任�
 image::imgs/02.jpg[]
 image::imgs/03.jpg[]
 
-查找： https://mvnrepository.com/[https://mvnrepository.com/]
+查找： [https://mvnrepository.com/](https://mvnrepository.com/)
 
 image::imgs/04.jpg[]
 
