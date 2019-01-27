@@ -46,7 +46,8 @@ Trigger主要包含两种SimplerTrigger和CronTrigger两种。关于二者的区
 Scheduler为任务的调度器，它会将任务Job及触发器Trigger整合起来，负责基于Trigger设定的时间来执行Job。
 
 ## 五、Quartz的体系结构
-image::imgs/01.jpg[]
+
+![avatar](imgs/01.jpg)
 
 ## 六、Quartz的几个常用API
 以下是Quartz编程API几个重要接口，也是Quartz的重要组件。
